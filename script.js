@@ -558,6 +558,26 @@ function initGalleryLightbox() {
       updateModal(currentIndex + 1);
     }
   });
+
+  // Touch swipe gestures for mobile devices
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const swipeDistance = touchEndX - touchStartX;
+    if (Math.abs(swipeDistance) > 40) {
+      if (swipeDistance > 0) {
+        updateModal(currentIndex - 1); // Swipe right -> Previous
+      } else {
+        updateModal(currentIndex + 1); // Swipe left -> Next
+      }
+    }
+  }, { passive: true });
 }
 
 /* ==========================================================================
